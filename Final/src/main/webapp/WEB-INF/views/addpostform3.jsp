@@ -100,8 +100,7 @@ body {
 				<tr><td>BSM</td><td><form:input path="bsm"/></td></tr>
 				<tr><td>전문교양</td><td><form:input path="pro"/></td></tr>
 				<tr><td>설계학점</td><td><form:input path="design"/></td></tr>
-				
-				<tr><td>학기</td><td><input type="text" name="semester" /></td>
+				<tr><td>학기</td><td><form:input path="semester"/></td>
 			</tr>
 </table>
 <input type="submit" value="추가하기" />

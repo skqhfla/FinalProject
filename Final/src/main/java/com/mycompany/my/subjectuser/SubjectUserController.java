@@ -121,8 +121,7 @@ public class SubjectUserController {
 				one = one_1 + one_2 + one_3 + one_4;
 				two = two_1 + two_2 + two_3;
 				three = three_1 + three_2;
-				culture = culture + one + two + three + four + five + six;
-				total = culture + major;
+				total = one + two + three + four + five + six + culture + major;
 			}
 		}
 
@@ -173,7 +172,6 @@ public class SubjectUserController {
 		co.setCulture(culture);
 		co.setTotal(total);
 
-		System.out.println(total);
 		model.addAttribute("list", co);
 
 		return "total";
@@ -312,7 +310,45 @@ public class SubjectUserController {
 		model.addAttribute("subjectVO", subjectVO);
 		return "addpostform2";
 	}
+	
+	@RequestMapping(value = "/subjectuser/{semester}", method = RequestMethod.GET)
+	public String addPostformsemeter( Model model, @PathVariable("semester") int semester) {
+		model.addAttribute("addpostform", subjectService.getSubjectList());
+		model.addAttribute("sem", semester);
+		System.out.println(semester);
 
+		return "addpostform4";
+	}
+
+	@RequestMapping(value = "/subjectuser/add/{id}/{semester}", method = RequestMethod.GET)
+	public String addPostform(@PathVariable("id") int id, HttpServletRequest request, @PathVariable("semester") int semester) {
+		SubjectVO subjectVO = subjectService.getSubject(id);
+		HttpSession session = request.getSession();
+		String userid = request.getSession().getAttribute("login").toString();
+
+		SubjectUserVO vo = new SubjectUserVO();
+		vo.setArea1(subjectVO.getArea1());
+		vo.setArea2(subjectVO.getArea2());
+		vo.setArea3(subjectVO.getArea3());
+		vo.setBsm(subjectVO.getBsm());
+		vo.setDesign(subjectVO.getDesign());
+		vo.setCredit(subjectVO.getCredit());
+		vo.setPro(subjectVO.getPro());
+		vo.setSepar(subjectVO.getSepar());
+		vo.setSemester(semester);
+		vo.setSubname(subjectVO.getSubname());
+		vo.setUserid(userid);
+
+		int i = userService.insertUser(vo);
+		if (i == 0) {
+			System.out.println("데이터 추가 실패 ");
+		} else {
+			System.out.println("데이터 추가 성공 ");
+		}
+		
+		return "redirect:../../course" + semester;
+	}
+	
 	@RequestMapping(value = "/subjectuser/addok", method = RequestMethod.POST)
 	public String addPostOK(HttpServletRequest request) {
 
@@ -348,7 +384,7 @@ public class SubjectUserController {
 		} else {
 			System.out.println("데이터 추가 성공 ");
 		}
-
+		
 		return "redirect:list";
 	}
 

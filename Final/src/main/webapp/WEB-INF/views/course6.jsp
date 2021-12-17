@@ -81,6 +81,9 @@ body {
 		var a = confirm("정말로 삭제하겠습니까?");
 		if(a) location.href='deleteok/' + id;
 	}
+	function go(semester){
+		location.href=semester;
+	}
 </script>
 </head>
 <body>
@@ -118,7 +121,7 @@ body {
 		</tr>
 	</c:forEach>
 </table>
-<br/><button type="button" onclick="location.href='add'">추가하기</button>
+<br/><button type="button" onclick="javascript:go(6)">추가하기</button>
 
 </div>
 

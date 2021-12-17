@@ -93,5 +93,4 @@ public class SubjectVO {
 	public void setDesign(int design) {
 		this.design = design;
 	}
-
 }
