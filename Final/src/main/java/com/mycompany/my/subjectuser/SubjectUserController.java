@@ -26,38 +26,31 @@ public class SubjectUserController {
 	SubjectUserService userService;
 	@Autowired
 	SubjectService subjectService;
-	
 
 	@RequestMapping(value = "/subjectuser/list", method = RequestMethod.GET)
 	public String userlist(Model model, HttpServletRequest request) {
-		// model.addAttribute("list", userService.getUserList());
-
 		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
 		HttpSession session = request.getSession();
 		userService.Order();
 		for (SubjectUserVO vo : userService.getUserList()) {
-
 			if (vo.getUserid().equals((session).getAttribute("login"))) {
 				l.add(vo);
-
 			}
-
 		}
 		Collections.sort(l, new ListComparator());
 		model.addAttribute("list", l);
 
 		return "list";
 	}
-	
+
 	@RequestMapping(value = "/subjectuser/total", method = RequestMethod.GET)
 	public String totalCheck(Model model, HttpServletRequest request) {
-		// model.addAttribute("list", userService.getUserList());
 		int zero = 0; // 채플
 		int one = 0;
-		int one_1 = 0; //기독교신앙의 기초1
-		int one_2 = 0; //기독교신앙의 기초2
-		int one_3 = 0; //세계관1
-		int one_4 = 0; //세계관2
+		int one_1 = 0; // 기독교신앙의 기초1
+		int one_2 = 0; // 기독교신앙의 기초2
+		int one_3 = 0; // 세계관1
+		int one_4 = 0; // 세계관2
 		int two = 0;
 		int two_1 = 0; // 공동체 리더십 훈련
 		int two_2 = 0; // 사회봉사
@@ -75,60 +68,56 @@ public class SubjectUserController {
 		int total = 0;
 
 		HttpSession session = request.getSession();
-		
 		SubjectUserCheckVO co = new SubjectUserCheckVO();
-		
+
 		for (SubjectUserVO vo : userService.gettotal()) {
 
 			if (vo.getUserid().equals((session).getAttribute("login"))) {
-				
-				if(vo.getSubname().contains("채플"))
+				if (vo.getSubname().contains("채플"))
 					zero++;
-				else if(vo.getArea3().equals("기독교신앙의 기초1"))
+				else if (vo.getArea3().equals("기독교신앙의 기초1"))
 					one_1 += vo.getCredit();
-				else if(vo.getArea3().equals("기독교신앙의 기초2"))
+				else if (vo.getArea3().equals("기독교신앙의 기초2"))
 					one_2 += vo.getCredit();
-				else if(vo.getArea3().equals("세계관1"))
+				else if (vo.getArea3().equals("세계관1"))
 					one_3 += vo.getCredit();
-				else if(vo.getArea3().equals("세계관2"))
+				else if (vo.getArea3().equals("세계관2"))
 					one_4 += vo.getCredit();
-				
-				else if(vo.getSubname().contains("공동체 리더십 훈련"))
+
+				else if (vo.getSubname().contains("공동체 리더십 훈련"))
 					two_1 += vo.getCredit();
-				else if(vo.getSubname().contains("사회봉사"))
+				else if (vo.getSubname().contains("사회봉사"))
 					two_2 += vo.getCredit();
-				else if(vo.getSubname().equals("한동인성교육"))
+				else if (vo.getSubname().equals("한동인성교육"))
 					two_3 += vo.getCredit();
-				
-				else if(vo.getArea3().equals("영어1")) {
-					if(vo.getSubname().contains("EAP"))
+
+				else if (vo.getArea3().equals("영어1")) {
+					if (vo.getSubname().contains("EAP"))
 						three_2 += vo.getCredit();
 					else
 						three_1 += vo.getCredit();
 				}
-				
+
 				else if (vo.getSeq() == 184 || vo.getSeq() == 189 || vo.getSeq() == 188 || vo.getSeq() == 183)
 					five += vo.getCredit();
-				
-				
-				
-				else if((vo.getSeq() != 219 && vo.getArea1().equals("전공")) || vo.getSeq() == 187 ) {
-					if(vo.getSepar().equals("전공필수"))
+
+				else if ((vo.getSeq() != 219 && vo.getArea1().equals("전공")) || vo.getSeq() == 187) {
+					if (vo.getSepar().equals("전공필수"))
 						major_count++;
-					
+
 					major += vo.getCredit();
 					major_design += vo.getDesign();
 				}
-				
+
 				else
 					culture += vo.getCredit();
-				
-				if(vo.getBsm() != 0)
+
+				if (vo.getBsm() != 0)
 					four = vo.getBsm();
-				
-				if(vo.getPro() != 0)
+
+				if (vo.getPro() != 0)
 					six += vo.getPro();
-				
+
 				one = one_1 + one_2 + one_3 + one_4;
 				two = two_1 + two_2 + two_3;
 				three = three_1 + three_2;
@@ -136,18 +125,18 @@ public class SubjectUserController {
 				total = culture + major;
 			}
 		}
-		
-		if(zero >= 6) {
-			if(one_1 >= 2 && one_2 >= 2 && one_3 >=2 && one_4 >=3) {
-				if(two_1 >= 6 && two_2 >= 2 && two_3 >= 1) {
-					if(three_2 >= 3) {
-						if(four >= 18) {
-							if(four >= 18) {
-								if(five >= 5) {
-									if(major_count >= 11) {
-										if(major_design >= 12) {
-											if(major >= 60) {
-												if(total >= 130) {
+
+		if (zero >= 6) {
+			if (one_1 >= 2 && one_2 >= 2 && one_3 >= 2 && one_4 >= 3) {
+				if (two_1 >= 6 && two_2 >= 2 && two_3 >= 1) {
+					if (three_2 >= 3) {
+						if (four >= 18) {
+							if (four >= 18) {
+								if (five >= 5) {
+									if (major_count >= 11) {
+										if (major_design >= 12) {
+											if (major >= 60) {
+												if (total >= 130) {
 													co.setPass("PASS");
 												}
 											}
@@ -159,11 +148,9 @@ public class SubjectUserController {
 					}
 				}
 			}
-		}
-		else
+		} else
 			co.setPass("Fail");
-		
-		
+
 		co.setZero(zero);
 		co.setOne(one);
 		co.setOne_1(one_1);
@@ -185,33 +172,131 @@ public class SubjectUserController {
 		co.setMajor_design(major_design);
 		co.setCulture(culture);
 		co.setTotal(total);
-		
+
 		System.out.println(total);
-		
 		model.addAttribute("list", co);
 
 		return "total";
 	}
-	
-	@RequestMapping(value = "/subjectuser/{semester}", method = RequestMethod.GET)
-	public String usersemesterlist(Model model, HttpServletRequest request,@PathVariable("semester") int semester) {
-		System.out.println(semester);
 
+	@RequestMapping(value = "/subjectuser/course1", method = RequestMethod.GET)
+	public String usersemester1(Model model, HttpServletRequest request) {
 		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
 		HttpSession session = request.getSession();
 
 		for (SubjectUserVO vo : userService.getUserList()) {
-
-			if (vo.getUserid().equals((session).getAttribute("login"))&&vo.getSemester()==semester) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 1) {
 				l.add(vo);
-
 			}
-
 		}
-		
 		model.addAttribute("list", l);
 
-		return "list";
+		return "course1";
+	}
+	
+	@RequestMapping(value = "/subjectuser/course2", method = RequestMethod.GET)
+	public String usersemester2(Model model, HttpServletRequest request) {
+		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
+		HttpSession session = request.getSession();
+
+		for (SubjectUserVO vo : userService.getUserList()) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 2) {
+				l.add(vo);
+			}
+		}
+		model.addAttribute("list", l);
+
+		return "course2";
+	}
+	
+	@RequestMapping(value = "/subjectuser/course3", method = RequestMethod.GET)
+	public String usersemester3(Model model, HttpServletRequest request) {
+		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
+		HttpSession session = request.getSession();
+
+		for (SubjectUserVO vo : userService.getUserList()) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 3) {
+				l.add(vo);
+			}
+		}
+		model.addAttribute("list", l);
+
+		return "course3";
+	}
+	
+	@RequestMapping(value = "/subjectuser/course4", method = RequestMethod.GET)
+	public String usersemester4(Model model, HttpServletRequest request) {
+		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
+		HttpSession session = request.getSession();
+
+		for (SubjectUserVO vo : userService.getUserList()) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 4) {
+				l.add(vo);
+			}
+		}
+		model.addAttribute("list", l);
+
+		return "course4";
+	}
+	
+	@RequestMapping(value = "/subjectuser/course5", method = RequestMethod.GET)
+	public String usersemester5(Model model, HttpServletRequest request) {
+		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
+		HttpSession session = request.getSession();
+
+		for (SubjectUserVO vo : userService.getUserList()) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 5) {
+				l.add(vo);
+			}
+		}
+		model.addAttribute("list", l);
+
+		return "course5";
+	}
+	
+	@RequestMapping(value = "/subjectuser/course6", method = RequestMethod.GET)
+	public String usersemester6(Model model, HttpServletRequest request) {
+		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
+		HttpSession session = request.getSession();
+
+		for (SubjectUserVO vo : userService.getUserList()) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 6) {
+				l.add(vo);
+			}
+		}
+		model.addAttribute("list", l);
+
+		return "course6";
+	}
+	
+	@RequestMapping(value = "/subjectuser/course7", method = RequestMethod.GET)
+	public String usersemester7(Model model, HttpServletRequest request) {
+		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
+		HttpSession session = request.getSession();
+
+		for (SubjectUserVO vo : userService.getUserList()) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 7) {
+				l.add(vo);
+			}
+		}
+		model.addAttribute("list", l);
+
+		return "course7";
+	}
+	
+	@RequestMapping(value = "/subjectuser/course8", method = RequestMethod.GET)
+	public String usersemester8(Model model, HttpServletRequest request) {
+		List<SubjectUserVO> l = new ArrayList<SubjectUserVO>();
+		HttpSession session = request.getSession();
+
+		for (SubjectUserVO vo : userService.getUserList()) {
+			if (vo.getUserid().equals((session).getAttribute("login")) && vo.getSemester() == 8) {
+				l.add(vo);
+			}
+		}
+		model.addAttribute("list", l);
+
+		return "course8";
 	}
 
 	@RequestMapping(value = "/subjectuser/add", method = RequestMethod.GET)
@@ -223,21 +308,19 @@ public class SubjectUserController {
 
 	@RequestMapping(value = "/subjectuser/add/{id}", method = RequestMethod.GET)
 	public String addPostform(@PathVariable("id") int id, Model model) {
-
 		SubjectVO subjectVO = subjectService.getSubject(id);
 		model.addAttribute("subjectVO", subjectVO);
 		return "addpostform2";
 	}
-	
+
 	@RequestMapping(value = "/subjectuser/addok", method = RequestMethod.POST)
 	public String addPostOK(HttpServletRequest request) {
-		
+
 		HttpSession session = request.getSession();
 		String userid = request.getSession().getAttribute("login").toString();
 		String area1 = request.getParameter("area1");
 		String area2 = request.getParameter("area2");
 		String area3 = request.getParameter("area3");
-		
 		String subname = request.getParameter("subname");
 		String separ = request.getParameter("separ");
 		int credit = Integer.parseInt(request.getParameter("credit"));
@@ -245,7 +328,7 @@ public class SubjectUserController {
 		int design = Integer.parseInt(request.getParameter("design"));
 		int bsm = Integer.parseInt(request.getParameter("bsm"));
 		int semester = Integer.parseInt(request.getParameter("semester"));
-		
+
 		SubjectUserVO vo = new SubjectUserVO();
 		vo.setArea1(area1);
 		vo.setArea2(area2);
@@ -258,15 +341,13 @@ public class SubjectUserController {
 		vo.setSemester(semester);
 		vo.setSubname(subname);
 		vo.setUserid(userid);
+
 		int i = userService.insertUser(vo);
-		if(i==0) {
+		if (i == 0) {
 			System.out.println("데이터 추가 실패 ");
-			
-		}
-		else {
+		} else {
 			System.out.println("데이터 추가 성공 ");
 		}
-
 
 		return "redirect:list";
 	}
@@ -282,7 +363,6 @@ public class SubjectUserController {
 
 		if (area.equals("전체") && separ.equals("전체")) {
 			l = subjectService.getSubjectList();
-
 		} else if (!area.equals("전체") && separ.equals("전체")) {
 			l = subjectService.getSubjectListS(area);
 		} else if (area.equals("전체") && !separ.equals("전체")) {
@@ -309,39 +389,38 @@ public class SubjectUserController {
 
 		return "addpostform";
 	}
+
 	@RequestMapping(value = "/subjectuser/editform/{seq}", method = RequestMethod.GET)
 	public String editPost(@PathVariable("seq") int seq, Model model) {
 		SubjectUserVO subjectVO = userService.getUser(seq);
 		model.addAttribute("subjectVO", subjectVO);
-		
+
 		return "editform";
 	}
-	
+
 	@RequestMapping(value = "/subjectuser/editok", method = RequestMethod.POST)
 	public String editPostOK(HttpServletRequest request, SubjectUserVO vo) {
 		int i = userService.updateUser(vo);
-		if(i==0) {
+		if (i == 0) {
 			System.out.println("데이터 수정 실패 ");
-			
-		}
-		else {
+
+		} else {
 			System.out.println("데이터 수정 성공 ");
 		}
-		
+
 		return "redirect:list";
 	}
-	
+
 	@RequestMapping(value = "/subjectuser/deleteok/{id}", method = RequestMethod.GET)
 	public String deletePost(@PathVariable("id") int id) {
 		int i = userService.deleteUser(id);
-		if(i==0) {
+		if (i == 0) {
 			System.out.println("데이터 삭제  실패 ");
-			
-		}
-		else {
+
+		} else {
 			System.out.println("데이터 삭제 성공 ");
 		}
-		
+
 		return "redirect:../list";
 	}
 

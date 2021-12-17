@@ -88,7 +88,7 @@ body {
 <h1>게시판</h1>
 <%@ include file="/WEB-INF/views/header.jsp" %>
 <div class="content">
-<h2>졸업학점계산기</h2>
+<h2>5학기</h2>
 <table id="list" width="90%">
 <tr>
 	<th>아이디</th>
